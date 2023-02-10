@@ -1,0 +1,192 @@
+#include <iostream>
+#include<fstream>
+#include<stdio.h>
+#include<string.h>
+#include<conio.h>
+#include<stdlib.h>
+using namespace std;
+
+class studentInfo
+{
+    public:
+    char name[10];
+    int age;
+    int rollno;
+    char city[10];
+
+    void get()
+    {
+        cout<<"Enter name:";
+        cin>>name;
+        cout<<"enter rollNo:";
+        cin>>rollno;
+        cout<<"Enter age:";
+        cin>>age;
+        cout<<"Enter city:";
+        cin>>city;
+
+    }
+    void show()
+    {
+        cout<<"Name:"<<name<<"\n";
+        cout<<"roll no:"<<rollno<<"\n";
+        cout<<"age:"<<age<<"\n";
+        cout<<"city:"<<city<<"\n";
+
+    }
+    void update()
+    {
+        cout<<"enter new Name:";
+        cin>>name;
+    }
+    int isAvailable(int rollno)
+    {
+        if(rollno==this->rollno)
+            return 1;
+        else
+            return 0;
+    }
+
+
+    void menu()
+    {
+
+        cout << "Press 1 to Input Data \n";
+        cout << "Press 2 to search Data \n";
+        cout << "Press 3 to update File \n";
+        cout << "Press 4 to Delete File \n";
+        cout << "Press 5 to show All data in File \n";
+        cout << "Press 0 to exit \n";
+
+    }
+};
+int main()
+{
+    system("cls");
+	studentInfo x;
+    fstream inout;
+    fstream inout1;
+
+    int choice,rollNo;
+    x.menu();
+    cout<<"choose option:\n";
+    cin>>choice;
+    while(choice!=0)
+    {
+        switch (choice)
+        {
+        case 1:
+                inout.open("studRecord3.dat",ios::app|ios::binary);
+                x.get();
+                inout.write((char*)&x,sizeof(x));
+                inout.close();
+                inout.open("studRecord3.txt",ios::in);
+                while(!inout.eof())
+                {
+                    inout.read((char*)&x,sizeof(x));
+                    x.show();
+                }
+                inout.close();
+
+            break;
+
+        case 2: {
+                cout<<"enter roll no:";
+                cin>>rollNo;
+                inout.open("studRecord3.dat",ios::in|ios::binary);
+                while(!inout.eof())
+                {
+
+                    inout.read((char*)&x,sizeof(x));
+                   // x.show();
+                    if(x.isAvailable(rollNo))
+                    {
+                        x.show();
+                        break;
+                    }
+
+
+                }
+                inout.close();
+
+                cout<<"choose option:\n";
+
+            break;
+        }
+        case 3:
+                cout<<"enter roll no:";
+                cin>>rollNo;
+                inout.open("studRecord3.dat",ios::in|ios::out|ios::binary);
+                while(!inout.eof())
+                {
+                    int p=inout.tellg();
+                    inout.read((char*)&x,sizeof(x));
+                    if(x.isAvailable(rollNo))
+                    {
+                        cout<<"old data:\n";
+                        x.show();
+                        x.update();
+                        inout.seekg(p,ios::beg);
+                        inout.write((char*)&x,sizeof(x));
+                        break;
+                    }
+                }
+                x.show();
+
+            break;
+        case 4:
+                cout<<"delete option\n";
+                cout<<"enter rollNo:";
+                cin>>rollNo;
+                inout.open("studRecord3.dat",ios::in|ios::binary);
+                if(!inout1)
+                    cout<<"\nfile not found\n";
+                else{
+                    inout1.open("tempfile.dat",ios::out|ios::binary);
+                    inout.read((char*)&x,sizeof(x));
+                    while(!inout.eof())
+                    {
+                        if(x.isAvailable(rollNo))
+                        {
+                            inout.read((char*)&x,sizeof(x));
+                        }
+                        else
+                        {
+                            inout1.write((char*)&x,sizeof(x));
+                        }
+                        inout.read((char*)&x,sizeof(x));
+                    }
+                    inout.close();
+                    inout1.close();
+                    remove("studRecord3.dat");
+                    rename("tempfile.dat","studRecord3.dat");
+                    }
+
+              break;
+
+        case 5:
+                inout.open("studRecord3.dat",ios::in|ios::binary);
+                while(!inout.eof())
+                {
+                    inout.read((char*)&x,sizeof(x));
+                    x.show();
+
+
+                }
+                inout.close();
+                break;
+
+        default:
+                printf("Wrong Input\n");
+
+
+        }
+        x.menu();
+        cout<<"choose option:\n";
+
+        cin>>choice;
+
+    }
+
+	return 0;
+}

@@ -1,0 +1,11 @@
+#include<iostream>
+using namespace std;
+
+
+//classes
+class allRounder;
+class compare;
+class bowling;
+class batting;
+class fielding;
+class player

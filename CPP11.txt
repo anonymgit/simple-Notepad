@@ -1,0 +1,259 @@
+#include<iostream>
+using namespace std;
+
+
+//classes
+class allRounder;
+class compare;
+class bowling;
+class batting;
+class fielding;
+class player
+{
+    char Name[10];
+    int playerID;
+    public:
+        void getData();
+        void show();
+};
+
+void player::getData()
+{
+    cout<<"enter Name of player:";
+    cin>>Name;
+    cout<<"Player ID:";
+    cin>>playerID;
+
+    cout<<"\n";
+}
+
+void player::show()
+{
+    cout<<"Player Name:"<<Name<<"\n";
+    cout<<"player ID:"<<playerID<<"\n";
+}
+
+class bowling
+{
+    int wicket;
+    static int W;
+public:
+    void getWicket();
+    void showWicket();
+    //int comp(bowling);
+    
+};
+void bowling::getWicket()
+{
+    cout<<"enter wickets:\n";
+    cin>>wicket;
+}
+void bowling::showWicket()
+{
+    cout<<"wickets:"<<wicket<<"\n";
+}
+
+int bowling::W=5;
+
+class batting
+{
+    int run;
+    static int R;
+public:
+    void getRun();
+    void showRun();
+    int comp(batting);
+    friend AllRounder getAllRounder(fielding,batting,bowling);
+};
+void batting::getRun()
+{
+    cout<<"enter Runs:\n";
+    cin>>run;
+}
+void batting::showRun()
+{
+    cout<<"Runs:"<<run<<"\n";
+}
+int batting::R=70;
+
+
+
+class fielding
+{
+    int catches;
+    static int C;
+public:
+    void getCatches();
+    void showCatches();
+    int comp(fielding);
+    
+    friend AllRounder getAllRounder(fielding,batting,bowling);
+};
+void fielding::getCatches()
+{
+    cout<<"enter catches:\n";
+    cin>>catches;
+}
+void fielding::showCatches()
+{
+    cout<<"Catches:"<<catches<<"\n";
+}
+int fielding::C=5;
+
+
+/*
+int batting::comp(batting A)
+{
+    if(run<A.run)
+        return(1);
+    else
+        return(0);
+}
+int fielding::comp(fielding A)
+{
+    if(catches<A.catches)
+        return(1);
+    else
+        return(0);
+}
+
+int bowling::comp(bowling A)
+{
+    if(wicket<A.wicket)
+        return(1);
+    else
+        return(0);
+}
+
+class AllRounder
+{
+    int a;
+public:
+    void show();
+    friend AllRounder getAllRounder(fielding,batting,bowling);
+};
+void shape::show()
+{
+    cout<<"All rounder player is: \n";
+    cout<<a;
+    cout<<"\n";
+}
+AllRounder getAllRounder(fielding field,batting bat,bowling ball)
+{
+    AllRounder A;
+
+    return(s);
+}
+
+*/
+int main()
+{
+    int i,j;
+    batting bat[3],B;
+    fielding field[3],F;
+    bowling ball[3],W;
+
+
+    // run
+    for(i=0;i<3;i++)
+    {
+        cout<<"player:"<<i+1<<"\n";
+        bat[i].getRun();
+    }
+
+    // catches
+    for(i=0;i<3;i++)
+    {
+        cout<<"player:"<<i+1<<"\n";
+        field[i].getCatches();
+    }
+
+    //wicket
+    for(i=0;i<3;i++)
+    {
+        cout<<"player:"<<i+1<<"\n";
+        ball[i].getWicket();
+    }
+
+    cout<<"all scorecards\n";
+    for(i=0;i<3;i++)
+    {
+        bat[i].showRun();
+    }
+
+    cout<<"all wicket\n";
+    for(i=0;i<3;i++)
+    {
+        ball[i].showWicket();
+    }
+    cout<<"all catches\n";
+    for(i=0;i<3;i++)
+    {
+        field[i].showCatches();
+    }
+
+
+    for( i=0;i<3;i++)
+    {
+       for( j=i+1;j<3;j++)
+       {
+           if(bat[i].comp(bat[j]))
+           {
+                B=bat[i];
+                bat[i]=bat[j];
+                bat[j]=B;
+           }
+
+       }
+    }
+
+    for( i=0;i<3;i++)
+    {
+       for( j=i+1;j<3;j++)
+       {
+           if(field[i].comp(field[j]))
+           {
+                F=field[i];
+                field[i]=field[j];
+                field[j]=F;
+           }
+
+       }
+    }
+
+
+    for( i=0;i<3;i++)
+    {
+       for( j=i+1;j<3;j++)
+       {
+           if(ball[i].comp(ball[j]))
+           {
+                W=ball[i];
+                ball[i]=ball[j];
+                ball[j]=W;
+           }
+
+       }
+    }
+
+
+    //toppers in every section
+    cout<<"all scorecards\n";
+    for(i=0;i<3;i++)
+    {
+        bat[i].showRun();
+    }
+
+    cout<<"all wicket\n";
+    for(i=0;i<3;i++)
+    {
+        ball[i].showWicket();
+    }
+    cout<<"all catches\n";
+    for(i=0;i<3;i++)
+    {
+        field[i].showCatches();
+    }
+
+}
+
